@@ -59,6 +59,16 @@ final class UiUtil {
         sp.setPrefViewportHeight(view.getPrefHeight() + 2);
         sp.setMinHeight(view.getPrefHeight() + 22);
 
+        // Pas de table de transition pour un AFN-ε (trop longue, inutile) : le dessin suffit.
+        boolean hasEps = m.transitions().stream().anyMatch(tr -> tr.isEpsilon());
+        Label dd0 = new Label("Automate dessiné");
+        dd0.setStyle("-fx-font-weight:bold;");
+        if (hasEps) {
+            VBox boxEps = new VBox(8, header, dd0, sp);
+            boxEps.getStyleClass().add("block");
+            return boxEps;
+        }
+
         ScrollPane tableScroll = new ScrollPane(transitionTable(m, prefix));
         tableScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         tableScroll.setStyle("-fx-background-color:transparent;");
